@@ -1,6 +1,13 @@
+"""
+    utils file: utility functions
+"""
+
 from dotenv import dotenv_values
 
 def get_credentials():
+    """
+        get credentials from .env
+    """
     config = dotenv_values(".env")
     username = config["DB_USERNAME"]
     password = config["DB_PASSWORD"]

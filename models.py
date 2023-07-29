@@ -1,9 +1,17 @@
+"""
+    models file: all models related to DB or request and response
+"""
+
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DECIMAL, ForeignKey
+from sqlalchemy import Column, Integer, String, DECIMAL
 
 Base = declarative_base()
 
 class Customer(Base):
+    """
+        represents customer table in the DB
+    """
+
     __tablename__ = "customers"
 
     customerNumber = Column(Integer, primary_key=True)
@@ -17,5 +25,19 @@ class Customer(Base):
     state = Column(String(50), nullable=True)
     postalCode = Column(String(15), nullable=True)
     country = Column(String(50), nullable=False)
-    salesRepEmployeeNumber = Column(Integer, ForeignKey("employees.employeeNumber"), nullable=True)
+    salesRepEmployeeNumber = Column(Integer, nullable=True)
     creditLimit = Column(DECIMAL(10, 2), nullable=True)
+
+    def update(self, body: dict):
+        """
+            update record in DB
+        """
+        for key, value in body.items():
+            setattr(self, key, value)
+
+class Response():
+    """
+        response structure
+    """
+    status = str
+    message = str
