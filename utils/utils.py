@@ -4,7 +4,7 @@
 
 from dotenv import dotenv_values
 
-def get_credentials():
+def get_credentials() -> tuple[str]:
     """
         get credentials from .env
     """

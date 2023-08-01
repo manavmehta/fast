@@ -4,8 +4,9 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import models
-import utils
+from models.customer import Customer
+import models.standard as structs
+import utils.utils as utils
 
 username, password, host, port = utils.get_credentials()
 
@@ -14,6 +15,7 @@ DB_URL = (
     f"{username}:{password}"
     f"@{host}:{port}/classicmodels"
 )
+
 
 # create engine connection to the mysql DB
 engine = create_engine(DB_URL)
@@ -27,7 +29,7 @@ def get_all_customers():
     """
 
     with Session() as session:
-        customers = session.query(models.Customer).all()
+        customers = session.query(Customer).all()
 
     return customers
 
@@ -37,7 +39,7 @@ def get_customer(customer_number: int):
     """
 
     with Session() as session:
-        customer = session.query(models.Customer).filter_by(customerNumber=customer_number).first()
+        customer = session.query(Customer).filter_by(customerNumber=customer_number).first()
 
     return customer
 
@@ -47,9 +49,9 @@ def update_customer(customer_number: int, body: dict):
     """
 
     with Session() as session:
-        customer = session.query(models.Customer).filter_by(customerNumber=customer_number).first()
+        customer = session.query(Customer).filter_by(customerNumber=customer_number).first()
 
-        response = models.Response()
+        response = structs.Response()
         response.status = "failure"
         response.message = "Record not found"
         if customer is not None:

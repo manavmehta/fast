@@ -1,5 +1,5 @@
 """
-    models file: all models related to DB or request and response
+    Customer Model
 """
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -34,10 +34,3 @@ class Customer(Base):
         """
         for key, value in body.items():
             setattr(self, key, value)
-
-class Response():
-    """
-        response structure
-    """
-    status = str
-    message = str

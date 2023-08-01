@@ -2,32 +2,22 @@
     main file: entry point for the app
 """
 
-from fastapi import FastAPI, Request
-import db
+import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from routes.app import appRouter
 
-app = FastAPI()
+app = FastAPI(title="Fast App")
 
+app.include_router(appRouter)
 
-@app.get("/get-all-customers")
-async def get_all_customers():
-    """
-        Returns all customers
-    """
-    return db.get_all_customers()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
-
-@app.get("/get-customer/{customer_number}")
-async def get_customer(customer_number: int):
-    """
-        Returns the customer with the specified customer number
-    """
-    return db.get_customer(customer_number)
-
-
-@app.put("/update-customer/{customer_number}")
-async def update_customer(customer_number: int, request: Request):
-    """
-        Updates customer record that matches specified customer number
-    """
-    body = await request.json()
-    return db.update_customer(customer_number, body)
+if __name__ == '__main__':
+    uvicorn.run("main:app",  reload=True)
